@@ -11,10 +11,9 @@ row = 1
 column = -1
 print(currency_data)
 
-# main calculate function
-
 
 def convert():
+    """Main function. Converting amount from one currency to another"""
     user_input = float(currency_input.get())
     user_currency = float(radio_state.get())
     result_currency = float(radio_state_to.get())
@@ -23,21 +22,26 @@ def convert():
     label_result.config(text=f"{result}\n{currency_label}")
 
 
+def display_countries(state_variable):
+    """Displaying radiobuttons with currency names and rendering it from csv file"""
+    global column, row
+    for nr in range(0, len(currency_data.country)):
+        column += 1
+        if column == 3:
+            column = 0
+            row += 1
+        radiobtn = Radiobutton(text=f"{currency_data.country[nr]}", value=currency_data.cost[nr],
+                               tristatevalue=currency_data.cost[nr], variable=state_variable)
+        radiobtn.grid(column=column, row=row)
+
+
 currency_input = Entry(width=30)
 currency_input.grid(column=1, row=0, pady=20)
 
 # first row of radiobuttons
 
 radio_state = StringVar()
-for number in range(0, len(currency_data.country)):
-    column += 1
-    if column == 3:
-        column = 0
-        row += 1
-    radiobutton = Radiobutton(text=f"{currency_data.country[number]}",
-                              value=currency_data.cost[number],
-                              tristatevalue=currency_data.cost[number], variable=radio_state)
-    radiobutton.grid(column=column, row=row)
+display_countries(radio_state)
 
 row = row + 1
 
@@ -48,17 +52,9 @@ row = row + 1
 
 # second row of radiobuttons
 
+column += 1
 radio_state_to = StringVar()
-column = -1
-for number in range(0, len(currency_data.country)):
-    column += 1
-    if column == 3:
-        column = 0
-        row += 1
-    radiobutton = Radiobutton(text=f"{currency_data.country[number]}",
-                              value=currency_data.cost[number],
-                              tristatevalue=currency_data.cost[number], variable=radio_state_to)
-    radiobutton.grid(column=column, row=row + 1)
+display_countries(radio_state_to)
 
 
 label_result = Label(text="0", font=("Arial", 18, "bold"))
